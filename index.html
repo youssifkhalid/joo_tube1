@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Updated platform name -->
+    <title>منصة الكحيانين - المنصة التعليمية الأولى</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+
+        /* Enhanced header with platform branding */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulse 2s infinite;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        .logo .subtitle {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: -5px;
+        }
+
+        /* Enhanced search bar */
+        .search-container {
+            position: relative;
+            flex: 1;
+            max-width: 500px;
+            margin: 0 2rem;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 12px 50px 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .search-btn {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Enhanced navigation */
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn.primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .nav-btn.secondary {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Enhanced main container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .section {
+            display: none;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Enhanced subject cards */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .subject-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .subject-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+
+        .subject-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subject-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .subject-description {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .subject-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* Enhanced teacher section */
+        .teacher-header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .teacher-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #667eea;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .teacher-info h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .teacher-info .subject-badge {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .teacher-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .teacher-stat {
+            text-align: center;
+        }
+
+        .teacher-stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .teacher-stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Enhanced video grid */
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .video-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .video-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+        }
+
+        .video-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .video-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .video-card:hover .video-thumbnail img {
+            transform: scale(1.1);
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(102, 126, 234, 0.9);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+
+        .video-card:hover .play-button {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .video-duration {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .video-info {
+            padding: 1.5rem;
+        }
+
+        .video-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .video-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .btn-icon:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            transform: scale(1.1);
+        }
+
+        .btn-icon.favorited {
+            color: #e74c3c;
+        }
+
+        /* Enhanced video modal */
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+
+        .video-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .video-modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 90%;
+            overflow: hidden;
+            position: relative;
+            animation: slideInUp 0.4s ease;
+        }
+
+        .video-modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .video-modal-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #666;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+
+        .video-player-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+        }
+
+        .video-player {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-controls {
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f9fa;
+        }
+
+        .video-control-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .video-control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Documents section */
+        .documents-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .documents-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .documents-header i {
+            font-size: 2rem;
+            color: #667eea;
+        }
+
+        .documents-header h3 {
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .document-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .document-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .document-icon {
+            font-size: 3rem;
+            color: #e74c3c;
+            margin-bottom: 1rem;
+        }
+
+        .document-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .document-size {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Motivational messages */
+        .motivation-popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            z-index: 3000;
+            transform: translateX(400px);
+            transition: all 0.5s ease;
+            max-width: 350px;
+        }
+
+        .motivation-popup.show {
+            transform: translateX(0);
+        }
+
+        .motivation-popup .close-motivation {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .motivation-popup .close-motivation:hover {
+            opacity: 1;
+        }
+
+        .motivation-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        /* Loading and animations */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            z-index: 1500;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #e0e0e0;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .no-content {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .no-content i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #ccc;
+        }
+
+        .no-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Responsive design improvements */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .search-container {
+                margin: 0;
+                max-width: 100%;
+            }
+            
+            .nav-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .subjects-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .teacher-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .teacher-stats {
+                justify-content: center;
+            }
+            
+            .videos-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .video-modal-content {
+                width: 95%;
+                margin: 1rem;
+            }
+            
+            .video-player-container {
+                height: 250px;
+            }
+            
+            .motivation-popup {
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Updated header with new platform name -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <div>
+                    <h1>منصة الكحيانين</h1>
+                    <div class="subtitle">المنصة التعليمية الأولى</div>
+                </div>
+            </div>
+            
+            <div class="search-container">
+                <input type="text" id="search-input" class="search-bar" placeholder="ابحث عن الفيديوهات والمدرسين..." onkeypress="handleSearchKeyPress(event)">
+                <button class="search-btn" onclick="performSearch()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="nav-btn primary" onclick="showSection('home-section')">
+                    <i class="fas fa-home"></i> الرئيسية
+                </button>
+                <button class="nav-btn secondary" onclick="showSection('favorites-section')">
+                    <i class="fas fa-heart"></i> المفضلة
+                </button>
+                <button class="nav-btn secondary" onclick="showSection('statistics-section')">
+                    <i class="fas fa-chart-bar"></i> الإحصائيات
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Enhanced home section -->
+        <section id="home-section" class="section active">
+            <div class="subjects-grid">
+                <div class="subject-card" onclick="showSubjectTeachers('كيمياء')" data-aos="fade-up">
+                    <div class="subject-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3 class="subject-title">الكيمياء</h3>
+                    <p class="subject-description">تعلم أساسيات الكيمياء مع أفضل المدرسين</p>
+                    <div class="subject-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" id="chemistry-videos">0</div>
+                            <div class="stat-label">فيديو</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="chemistry-views">0</div>
+                            <div class="stat-label">مشاهدة</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="chemistry-searches">0</div>
+                            <div class="stat-label">بحث</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subject-card" onclick="showSubjectTeachers('فيزياء')" data-aos="fade-up" data-aos-delay="100">
+                    <div class="subject-icon">
+                        <i class="fas fa-atom"></i>
+                    </div>
+                    <h3 class="subject-title">الفيزياء</h3>
+                    <p class="subject-description">اكتشف قوانين الفيزياء بطريقة مبسطة</p>
+                    <div class="subject-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" id="physics-videos">0</div>
+                            <div class="stat-label">فيديو</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="physics-views">0</div>
+                            <div class="stat-label">مشاهدة</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="physics-searches">0</div>
+                            <div class="stat-label">بحث</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subject-card" onclick="showSubjectTeachers('أحياء')" data-aos="fade-up" data-aos-delay="200">
+                    <div class="subject-icon">
+                        <i class="fas fa-dna"></i>
+                    </div>
+                    <h3 class="subject-title">الأحياء</h3>
+                    <p class="subject-description">استكشف عالم الكائنات الحية</p>
+                    <div class="subject-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" id="biology-videos">0</div>
+                            <div class="stat-label">فيديو</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="biology-views">0</div>
+                            <div class="stat-label">مشاهدة</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="biology-searches">0</div>
+                            <div class="stat-label">بحث</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subject-card" onclick="showSubjectTeachers('إنجليزي')" data-aos="fade-up" data-aos-delay="300">
+                    <div class="subject-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3 class="subject-title">اللغة الإنجليزية</h3>
+                    <p class="subject-description">تطوير مهارات اللغة الإنجليزية</p>
+                    <div class="subject-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" id="english-videos">0</div>
+                            <div class="stat-label">فيديو</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="english-views">0</div>
+                            <div class="stat-label">مشاهدة</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="english-searches">0</div>
+                            <div class="stat-label">بحث</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subject-card" onclick="showSubjectTeachers('عربي')" data-aos="fade-up" data-aos-delay="400">
+                    <div class="subject-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3 class="subject-title">اللغة العربية</h3>
+                    <p class="subject-description">إتقان قواعد اللغة العربية</p>
+                    <div class="subject-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" id="arabic-videos">0</div>
+                            <div class="stat-label">فيديو</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="arabic-views">0</div>
+                            <div class="stat-label">مشاهدة</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="arabic-searches">0</div>
+                            <div class="stat-label">بحث</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced videos section with teacher header -->
+        <section id="videos-section" class="section">
+            <div class="teacher-header" data-aos="fade-down">
+                <img id="teacher-avatar" class="teacher-avatar" src="/placeholder.svg?height=120&width=120" alt="صورة المدرس">
+                <div class="teacher-info">
+                    <h2 id="teacher-title">فيديوهات المدرس</h2>
+                    <div class="subject-badge" id="teacher-subject">المادة</div>
+                    <div class="teacher-stats">
+                        <div class="teacher-stat">
+                            <div class="teacher-stat-number" id="teacher-videos-count">0</div>
+                            <div class="teacher-stat-label">فيديو</div>
+                        </div>
+                        <div class="teacher-stat">
+                            <div class="teacher-stat-number" id="teacher-views-count">0</div>
+                            <div class="teacher-stat-label">مشاهدة</div>
+                        </div>
+                        <div class="teacher-stat">
+                            <div class="teacher-stat-number" id="teacher-subscribers">0</div>
+                            <div class="teacher-stat-label">مشترك</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="videos-grid" id="videos-container">
+                <!-- Videos will be loaded here -->
+            </div>
+
+            <!-- Documents section -->
+            <div class="documents-section" data-aos="fade-up">
+                <div class="documents-header">
+                    <i class="fas fa-file-pdf"></i>
+                    <h3>المستندات والملفات</h3>
+                </div>
+                <div class="documents-grid" id="documents-container">
+                    <!-- Documents will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Statistics Section -->
+        <section id="statistics-section" class="section">
+            <h2>إحصائيات</h2>
+            <div id="stats-container">
+                <!-- Statistics will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Favorites Section -->
+        <section id="favorites-section" class="section">
+            <h2>المفضلة</h2>
+            <div id="favorites-container" class="videos-grid">
+                <!-- Favorite videos will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Search Section -->
+        <section id="search-section" class="section">
+            <h2>نتائج البحث</h2>
+            <div id="search-results" class="videos-grid">
+                <!-- Search results will be loaded here -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Enhanced video modal -->
+    <div id="video-modal" class="video-modal">
+        <div class="video-modal-content">
+            <div class="video-modal-header">
+                <h3 class="video-modal-title" id="modal-video-title">عنوان الفيديو</h3>
+                <button class="close-modal" onclick="closeVideoModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="video-player-container">
+                <iframe id="video-player" class="video-player" src="/placeholder.svg" allowfullscreen></iframe>
+            </div>
+            <div class="video-controls">
+                <button class="video-control-btn" onclick="toggleVideoFavorite(currentVideoId, currentVideoTitle, currentVideoThumbnail)">
+                    <i class="fas fa-heart"></i> إضافة للمفضلة
+                </button>
+                <button class="video-control-btn" onclick="shareVideo(currentVideoId, currentVideoTitle)">
+                    <i class="fas fa-share"></i> مشاركة
+                </button>
+                <button class="video-control-btn" onclick="openVideoInYoutube(currentVideoId)">
+                    <i class="fab fa-youtube"></i> فتح في يوتيوب
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Motivational popup -->
+    <div id="motivation-popup" class="motivation-popup">
+        <button class="close-motivation" onclick="closeMotivationPopup()">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="motivation-text" id="motivation-text">
+            ذاكر كويس يا كسمك
+        </div>
+    </div>
+
+    <!-- Loading spinner -->
+    <div id="loading" class="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        const YOUTUBE_API_KEY = 'AIzaSyA7TYBY-o0aIhZbZuzn_WJAjNht0F4YGH0';
+        
+        const teachersData = [
+            {
+                id: 'chemistry-mohamed-abdeljawad',
+                name: 'محمد عبد الجواد',
+                subject: 'كيمياء',
+                channelId: 'UC_CHANNEL_ID', // Will be extracted from playlists
+                avatar: '/placeholder.svg?height=120&width=120',
+                playlists: [
+                    { id: 'PL91xPELaCszWZKhQVC7ohvejPvfIFSQTU', title: 'أساسيات الكيمياء', isVideo: false },
+                    { id: 'PL91xPELaCszUh5zKmMa-vdTbjcpZ8t0Xi', title: 'الباب الأول', isVideo: false },
+                    { id: 'PL91xPELaCszVO876eMTb5D1m7Z3Efh33t', title: 'الباب الثاني', isVideo: false },
+                    { id: 'PL91xPELaCszXyzwCX7niMI5yVEW5NR_W4', title: 'الباب الثالث', isVideo: false },
+                    { id: 'PL91xPELaCszXf1RIS8Y6V5BgNBl1PDnXW', title: 'الباب الرابع', isVideo: false }
+                ]
+            },
+            {
+                id: 'physics-mohamed-abdelmaboud',
+                name: 'محمد عبد المعبود',
+                subject: 'فيزياء',
+                channelId: 'UC_CHANNEL_ID',
+                avatar: '/placeholder.svg?height=120&width=120',
+                playlists: [
+                    { id: 'DnNMJyD7EBY', title: 'المنهج كامل', isVideo: true }
+                ]
+            },
+            {
+                id: 'biology-mohamed-saleh',
+                name: 'محمد صالح',
+                subject: 'أحياء',
+                channelId: 'UC_CHANNEL_ID',
+                avatar: '/placeholder.svg?height=120&width=120',
+                playlists: [
+                    { id: 'PLrfUbqHkYDah6joGgvCVx3-BAY-ciIzbV', title: 'الأحياء', isVideo: false }
+                ]
+            },
+            {
+                id: 'english-mohamed-ayman',
+                name: 'د.محمد أيمن',
+                subject: 'إنجليزي',
+                channelId: 'UC_CHANNEL_ID',
+                avatar: '/placeholder.svg?height=120&width=120',
+                playlists: [
+                    { id: 'PLemPsKnFIn6VJ9DxQjpZrFg1-Zxt5roZn', title: 'الإنجليزي', isVideo: false }
+                ]
+            },
+            {
+                id: 'arabic-mohamed-salah',
+                name: 'محمد صلاح',
+                subject: 'عربي',
+                channelId: 'UC_CHANNEL_ID',
+                avatar: '/placeholder.svg?height=120&width=120',
+                playlists: [
+                    { id: 'PLiHRnPC3do8VFtupgw83CyTBlg_e95UTl', title: 'تأسيس', isVideo: false },
+                    { id: 'PLiHRnPC3do8VGnz7nwvA-7DmQ8zvuugSk', title: 'مراجعة نهائية', isVideo: false }
+                ]
+            }
+        ];
+
+        let currentTeacherId = null;
+        let currentTeacher = null;
+        let currentVideoId = null;
+        let currentVideoTitle = null;
+        let currentVideoThumbnail = null;
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        let searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+        let subjectStats = JSON.parse(localStorage.getItem('subjectStats')) || [];
+        let motivationMessages = [
+            'ذاكر كويس يا كسمك',
+            'ركز يعرص',
+            'يبني ركز مستقبلك هيضيع',
+            'عاش يبن المتناكه كمل',
+            'تصدق انك راجل عرص',
+            'يلا بقى شد حيلك',
+            'مستقبلك في إيدك',
+            'النجاح يحتاج صبر ومثابرة'
+        ];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
+            });
+            
+            initializeSubjectStats();
+            startMotivationMessages();
+            updateAllSubjectStats();
+        });
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function extractPlaylistId(url) {
+            const match = url.match(/[?&]list=([^&]+)/);
+            return match ? match[1] : null;
+        }
+
+        function extractVideoId(url) {
+            const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
+            return match ? match[1] : null;
+        }
+
+        async function fetchPlaylistVideos(playlistId) {
+            try {
+                const response = await fetch(
+                    `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${playlistId}&key=${YOUTUBE_API_KEY}`
+                );
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                return data.items.map(item => ({
+                    id: item.snippet.resourceId.videoId,
+                    title: item.snippet.title,
+                    description: item.snippet.description,
+                    thumbnail: item.snippet.thumbnails.maxresdefault?.url || 
+                              item.snippet.thumbnails.high?.url || 
+                              item.snippet.thumbnails.medium?.url,
+                    publishedAt: item.snippet.publishedAt,
+                    channelId: item.snippet.channelId,
+                    channelTitle: item.snippet.channelTitle
+                }));
+            } catch (error) {
+                console.error('Error fetching playlist videos:', error);
+                throw error;
+            }
+        }
+
+        async function fetchChannelInfo(channelId) {
+            try {
+                const response = await fetch(
+                    `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=${channelId}&key=${YOUTUBE_API_KEY}`
+                );
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.items && data.items.length > 0) {
+                    const channel = data.items[0];
+                    return {
+                        title: channel.snippet.title,
+                        description: channel.snippet.description,
+                        thumbnail: channel.snippet.thumbnails.high?.url || channel.snippet.thumbnails.default?.url,
+                        subscriberCount: channel.statistics.subscriberCount,
+                        videoCount: channel.statistics.videoCount,
+                        viewCount: channel.statistics.viewCount
+                    };
+                }
+                return null;
+            } catch (error) {
+                console.error('Error fetching channel info:', error);
+                return null;
+            }
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function showSubjectTeachers(subject) {
+            const teachers = teachersData.filter(teacher => teacher.subject === subject);
+            
+            if (teachers.length === 1) {
+                // If only one teacher, go directly to videos
+                showVideos(teachers[0].id, teachers[0].name);
+            } else {
+                // Show teacher selection (for future expansion)
+                showVideos(teachers[0].id, teachers[0].name);
+            }
+        }
+
+        async function showVideos(teacherId, teacherName) {
+            currentTeacherId = teacherId;
+            currentTeacher = teacherName;
+            
+            showLoading();
+            
+            try {
+                const teacher = teachersData.find(t => t.id === teacherId);
+                
+                if (!teacher) {
+                    showNotification('المدرس غير موجود', 'error');
+                    hideLoading();
+                    return;
+                }
+
+                // Update teacher header
+                document.getElementById('teacher-title').textContent = `فيديوهات ${teacher.name}`;
+                document.getElementById('teacher-subject').textContent = teacher.subject;
+                
+                const videosContainer = document.getElementById('videos-container');
+                const documentsContainer = document.getElementById('documents-container');
+                videosContainer.innerHTML = '';
+                documentsContainer.innerHTML = '';
+                
+                let allVideos = [];
+                let allDocuments = [];
+                let channelInfo = null;
+                
+                for (const playlist of teacher.playlists) {
+                    if (playlist.isVideo) {
+                        // Handle single video
+                        allVideos.push({
+                            id: playlist.id,
+                            title: playlist.title,
+                            thumbnail: `https://img.youtube.com/vi/${playlist.id}/maxresdefault.jpg`,
+                            playlistTitle: playlist.title,
+                            teacherName: teacher.name,
+                            subject: teacher.subject,
+                            description: ''
+                        });
+                    } else {
+                        try {
+                            const videos = await fetchPlaylistVideos(playlist.id);
+                            
+                            // Get channel info from first video
+                            if (!channelInfo && videos.length > 0) {
+                                channelInfo = await fetchChannelInfo(videos[0].channelId);
+                                if (channelInfo) {
+                                    // Update teacher info with real data
+                                    document.getElementById('teacher-avatar').src = channelInfo.thumbnail;
+                                    document.getElementById('teacher-title').textContent = `فيديوهات ${channelInfo.title}`;
+                                    document.getElementById('teacher-videos-count').textContent = channelInfo.videoCount || videos.length;
+                                    document.getElementById('teacher-views-count').textContent = formatNumber(channelInfo.viewCount || 0);
+                                    document.getElementById('teacher-subscribers').textContent = formatNumber(channelInfo.subscriberCount || 0);
+                                }
+                            }
+                            
+                            videos.forEach(video => {
+                                video.playlistTitle = playlist.title;
+                                video.teacherName = teacher.name;
+                                video.subject = teacher.subject;
+                                
+                                // Extract PDF documents from description
+                                const pdfLinks = extractPDFLinks(video.description || '');
+                                pdfLinks.forEach(link => {
+                                    allDocuments.push({
+                                        title: `مستند - ${video.title}`,
+                                        url: link,
+                                        type: 'pdf',
+                                        subject: teacher.subject
+                                    });
+                                });
+                            });
+                            
+                            allVideos.push(...videos);
+                        } catch (error) {
+                            console.error(`Error fetching playlist ${playlist.id}:`, error);
+                            showNotification(`خطأ في تحميل قائمة التشغيل: ${playlist.title}`, 'error');
+                        }
+                    }
+                }
+
+                // Display videos
+                if (allVideos.length === 0) {
+                    videosContainer.innerHTML = `
+                        <div class="no-videos" data-aos="fade-up">
+                            <i class="fas fa-video-slash"></i>
+                            <h3>لا توجد فيديوهات متاحة</h3>
+                            <p>سيتم إضافة الفيديوهات قريباً</p>
+                        </div>
+                    `;
+                } else {
+                    allVideos.forEach((video, index) => {
+                        const videoCard = document.createElement('div');
+                        videoCard.className = 'video-card';
+                        videoCard.setAttribute('data-aos', 'fade-up');
+                        videoCard.setAttribute('data-aos-delay', (index * 50).toString());
+                        
+                        videoCard.innerHTML = `
+                            <div class="video-thumbnail">
+                                <img src="${video.thumbnail}" alt="${video.title}" 
+                                     onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <div class="video-duration">HD</div>
+                            </div>
+                            <div class="video-info">
+                                <h3 class="video-title">${video.title}</h3>
+                                <div class="video-meta">
+                                    <span>${video.playlistTitle}</span>
+                                    <div class="video-actions">
+                                        <button class="btn-icon favorite-btn ${favorites.some(f => f.id === video.id) ? 'favorited' : ''}" 
+                                                title="إضافة للمفضلة">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                        <button class="btn-icon share-btn" title="مشاركة">
+                                            <i class="fas fa-share"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        
+                        const playButton = videoCard.querySelector('.play-button');
+                        const favoriteBtn = videoCard.querySelector('.favorite-btn');
+                        const shareBtn = videoCard.querySelector('.share-btn');
+                        
+                        playButton.addEventListener('click', () => {
+                            openVideo(video.id, video.title, video.description || '');
+                        });
+                        
+                        favoriteBtn.addEventListener('click', () => {
+                            toggleVideoFavorite(video.id, video.title, video.thumbnail);
+                        });
+                        
+                        shareBtn.addEventListener('click', () => {
+                            shareVideo(video.id, video.title);
+                        });
+                        
+                        videosContainer.appendChild(videoCard);
+                    });
+                }
+
+                // Display documents
+                if (allDocuments.length > 0) {
+                    allDocuments.forEach((doc, index) => {
+                        const docCard = document.createElement('div');
+                        docCard.className = 'document-card';
+                        docCard.setAttribute('data-aos', 'fade-up');
+                        docCard.setAttribute('data-aos-delay', (index * 50).toString());
+                        
+                        docCard.innerHTML = `
+                            <div class="document-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="document-info">
+                                <h4>${doc.title}</h4>
+                                <p>ملف PDF - ${doc.subject}</p>
+                            </div>
+                            <button class="btn-primary" onclick="window.open('${doc.url}', '_blank')">
+                                <i class="fas fa-download"></i> تحميل
+                            </button>
+                        `;
+                        
+                        documentsContainer.appendChild(docCard);
+                    });
+                } else {
+                    documentsContainer.innerHTML = `
+                        <div class="no-documents" data-aos="fade-up">
+                            <i class="fas fa-file-alt"></i>
+                            <h3>لا توجد مستندات متاحة</h3>
+                            <p>سيتم إضافة المستندات عند توفرها</p>
+                        </div>
+                    `;
+                }
+
+                // Update subject statistics
+                updateSubjectStats(teacher.subject, 'visits');
+                
+                // Show videos section
+                showSection('videos-section');
+                
+                hideLoading();
+            } catch (error) {
+                console.error('Error in showVideos:', error);
+                showNotification('حدث خطأ في تحميل الفيديوهات', 'error');
+                hideLoading();
+            }
+        }
+
+        function openVideo(videoId, title, description) {
+            if (!videoId) {
+                showNotification('معرف الفيديو غير صحيح', 'error');
+                return;
+            }
+            
+            currentVideoId = videoId;
+            currentVideoTitle = title;
+            currentVideoThumbnail = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+            
+            document.getElementById('modal-video-title').textContent = title;
+            document.getElementById('video-player').src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&fs=1&cc_load_policy=1`;
+            document.getElementById('video-modal').classList.add('active');
+            
+            // Update statistics
+            if (currentTeacher) {
+                const teacher = teachersData.find(t => t.name === currentTeacher);
+                if (teacher) {
+                    updateSubjectStats(teacher.subject, 'views');
+                }
+            }
+            
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+            
+            // Show success notification
+            showNotification('تم تشغيل الفيديو بنجاح', 'success');
+        }
+
+        function closeVideoModal() {
+            document.getElementById('video-modal').classList.remove('active');
+            document.getElementById('video-player').src = '';
+            document.body.style.overflow = 'auto';
+        }
+
+        function openVideoInYoutube(videoId) {
+            window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank');
+        }
+
+        function extractPDFLinks(description) {
+            const pdfRegex = /https?:\/\/[^\s]+\.pdf/gi;
+            return description.match(pdfRegex) || [];
+        }
+
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1) + 'M';
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'K';
+            }
+            return num.toString();
+        }
+
+        function initializeSubjectStats() {
+            const subjects = ['كيمياء', 'فيزياء', 'أحياء', 'إنجليزي', 'عربي'];
+            
+            subjectStats = JSON.parse(localStorage.getItem('subjectStats')) || [];
+
+            subjects.forEach(subject => {
+                if (!subjectStats.find(s => s.subject === subject)) {
+                    subjectStats.push({
+                        subject: subject,
+                        visits: 0,
+                        views: 0,
+                        favorites: 0,
+                        lastVisit: null,
+                        totalTime: 0
+                    });
+                }
+            });
+            
+            localStorage.setItem('subjectStats', JSON.stringify(subjectStats));
+        }
+
+        function updateSubjectStats(subject, action) {
+            const stat = subjectStats.find(s => s.subject === subject);
+            if (stat) {
+                stat[action] = (stat[action] || 0) + 1;
+                stat.lastVisit = new Date().toISOString();
+                localStorage.setItem('subjectStats', JSON.stringify(subjectStats));
+                updateAllSubjectStats();
+            }
+        }
+
+        function updateAllSubjectStats() {
+            const statsContainer = document.getElementById('stats-container');
+            if (!statsContainer) return;
+            
+            statsContainer.innerHTML = '';
+            
+            subjectStats.forEach((stat, index) => {
+                const statCard = document.createElement('div');
+                statCard.className = 'stat-card';
+                statCard.setAttribute('data-aos', 'fade-up');
+                statCard.setAttribute('data-aos-delay', (index * 100).toString());
+                
+                statCard.innerHTML = `
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>${stat.subject}</h3>
+                        <div class="stat-details">
+                            <div class="stat-item">
+                                <span class="stat-label">الزيارات:</span>
+                                <span class="stat-value">${stat.visits}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">المشاهدات:</span>
+                                <span class="stat-value">${stat.views}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">المفضلة:</span>
+                                <span class="stat-value">${stat.favorites}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                statsContainer.appendChild(statCard);
+            });
+        }
+
+        function startMotivationMessages() {
+            setInterval(() => {
+                showMotivationMessage();
+            }, 120000); // Every 2 minutes
+        }
+
+        function showMotivationMessage() {
+            const randomMessage = motivationMessages[Math.floor(Math.random() * motivationMessages.length)];
+            document.getElementById('motivation-text').textContent = randomMessage;
+            document.getElementById('motivation-popup').classList.add('show');
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                closeMotivationPopup();
+            }, 5000);
+        }
+
+        function closeMotivationPopup() {
+            document.getElementById('motivation-popup').classList.remove('show');
+        }
+
+        function handleSearchKeyPress(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        }
+
+        function performSearch() {
+            const query = document.getElementById('search-input').value.trim();
+            if (query) {
+                performGlobalSearch(query);
+            }
+        }
+
+        async function performGlobalSearch(query) {
+            if (!query.trim()) {
+                showNotification('يرجى إدخال كلمة للبحث', 'warning');
+                return;
+            }
+
+            // Track search in stats
+            teachersData.forEach(teacher => {
+                if (teacher.name.includes(query) || teacher.subject.includes(query)) {
+                    updateSubjectStats(teacher.subject, 'searches');
+                }
+            });
+
+            showLoading();
+            
+            try {
+                const searchResults = document.getElementById('search-results');
+                if (!searchResults) {
+                    // Create search section if it doesn't exist
+                    const searchSection = document.createElement('section');
+                    searchSection.id = 'search-section';
+                    searchSection.className = 'section';
+                    searchSection.innerHTML = `
+                        <h2>نتائج البحث</h2>
+                        <div id="search-results" class="videos-grid"></div>
+                    `;
+                    document.querySelector('.container').appendChild(searchSection);
+                }
+                
+                document.getElementById('search-results').innerHTML = '';
+                
+                let allVideos = [];
+                
+                for (const teacher of teachersData) {
+                    for (const playlist of teacher.playlists) {
+                        if (playlist.isVideo) {
+                            if (playlist.title.toLowerCase().includes(query.toLowerCase()) ||
+                                teacher.name.toLowerCase().includes(query.toLowerCase()) ||
+                                teacher.subject.toLowerCase().includes(query.toLowerCase())) {
+                                allVideos.push({
+                                    id: playlist.id,
+                                    title: playlist.title,
+                                    thumbnail: `https://img.youtube.com/vi/${playlist.id}/maxresdefault.jpg`,
+                                    teacherName: teacher.name,
+                                    subject: teacher.subject
+                                });
+                            }
+                        } else {
+                            try {
+                                const videos = await fetchPlaylistVideos(playlist.id);
+                                const filteredVideos = videos.filter(video =>
+                                    video.title.toLowerCase().includes(query.toLowerCase()) ||
+                                    teacher.name.toLowerCase().includes(query.toLowerCase()) ||
+                                    teacher.subject.toLowerCase().includes(query.toLowerCase()) ||
+                                    playlist.title.toLowerCase().includes(query.toLowerCase())
+                                );
+                                
+                                filteredVideos.forEach(video => {
+                                    video.teacherName = teacher.name;
+                                    video.subject = teacher.subject;
+                                });
+                                
+                                allVideos = allVideos.concat(filteredVideos);
+                            } catch (error) {
+                                console.error('Error searching playlist:', error);
+                            }
+                        }
+                    }
+                }
+                
+                if (allVideos.length === 0) {
+                    document.getElementById('search-results').innerHTML = `
+                        <div class="no-content" data-aos="fade-up">
+                            <i class="fas fa-search"></i>
+                            <h3>لا توجد نتائج</h3>
+                            <p>لم يتم العثور على فيديوهات تحتوي على "${query}"</p>
+                        </div>
+                    `;
+                } else {
+                    allVideos.forEach((video, index) => {
+                        const videoCard = document.createElement('div');
+                        videoCard.className = 'video-card';
+                        videoCard.setAttribute('data-aos', 'fade-up');
+                        videoCard.setAttribute('data-aos-delay', (index * 50).toString());
+                        
+                        videoCard.innerHTML = `
+                            <div class="video-thumbnail">
+                                <img src="${video.thumbnail}" alt="${video.title}" 
+                                     onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">
+                                <div class="play-button" onclick="openVideo('${video.id}', '${escapeHtml(video.title)}', '${escapeHtml(video.description || '')}')">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                            <div class="video-info">
+                                <h3 class="video-title">${video.title}</h3>
+                                <div class="video-meta">
+                                    <span>${video.teacherName} - ${video.subject}</span>
+                                    <div class="video-actions">
+                                        <button onclick="toggleVideoFavorite('${video.id}', '${escapeHtml(video.title)}', '${video.thumbnail}')" 
+                                                class="btn-icon ${favorites.some(f => f.id === video.id) ? 'favorited' : ''}" 
+                                                title="إضافة للمفضلة">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                        <button onclick="shareVideo('${video.id}', '${escapeHtml(video.title)}')" 
+                                                class="btn-icon" title="مشاركة">
+                                            <i class="fas fa-share"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        
+                        document.getElementById('search-results').appendChild(videoCard);
+                    });
+                }
+                
+                showSection('search-section');
+                hideLoading();
+                
+                // Save search to history
+                if (!searchHistory.includes(query)) {
+                    searchHistory.unshift(query);
+                    if (searchHistory.length > 10) searchHistory.pop();
+                    localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+                }
+                
+                AOS.refresh();
+                
+            } catch (error) {
+                console.error('Error performing search:', error);
+                showNotification('حدث خطأ في البحث', 'error');
+                hideLoading();
+            }
+        }
+
+        function toggleVideoFavorite(videoId, title, thumbnail) {
+            const existingIndex = favorites.findIndex(f => f.id === videoId);
+            
+            if (existingIndex > -1) {
+                favorites.splice(existingIndex, 1);
+                showNotification('تم إزالة الفيديو من المفضلة', 'info');
+            } else {
+                favorites.push({
+                    id: videoId,
+                    title: title,
+                    thumbnail: thumbnail,
+                    addedAt: new Date().toISOString()
+                });
+                showNotification('تم إضافة الفيديو للمفضلة', 'success');
+            }
+            
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            
+            // Update favorite buttons
+            document.querySelectorAll(`button[onclick*="${videoId}"]`).forEach(btn => {
+                if (btn.onclick.toString().includes('toggleVideoFavorite')) {
+                    btn.classList.toggle('favorited', favorites.some(f => f.id === videoId));
+                }
+            });
+        }
+
+        function shareVideo(videoId, title) {
+            const url = `https://www.youtube.com/watch?v=${videoId}`;
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    url: url
+                });
+            } else {
+                navigator.clipboard.writeText(url).then(() => {
+                    showNotification('تم نسخ رابط الفيديو', 'success');
+                });
+            }
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function showNotification(message, type = 'success') {
+            // Create notification element if it doesn't exist
+            let notification = document.getElementById('notification');
+            if (!notification) {
+                notification = document.createElement('div');
+                notification.id = 'notification';
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#ff9800'};
+                    color: white;
+                    padding: 1rem 2rem;
+                    border-radius: 10px;
+                    z-index: 3000;
+                    opacity: 0;
+                    transition: all 0.3s ease;
+                `;
+                document.body.appendChild(notification);
+            }
+            
+            notification.textContent = message;
+            notification.style.opacity = '1';
+            notification.style.transform = 'translateX(-50%) translateY(0)';
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(-50%) translateY(-20px)';
+            }, 3000);
+        }
+
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('video-modal');
+            if (event.target === modal) {
+                closeVideoModal();
+            }
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeVideoModal();
+                closeMotivationPopup();
+            }
+        });
+    </script>
+</body>
+</html>
